@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Reto2DAM</string>
+    <!-- activity_login -->
+    <string name="lbl_title">The Best App</string>
+    <string name="lbl_user_name">Username:</string>
+    <string name="lbl_password">Password:</string>
+    <string name="lbl_no_account">You don\'t have an account?</string>
+    <string name="btn_login">login</string>
+    <string name="btn_register">register</string>
+    <!-- activity_register -->
+    <string name="btn_submit">submit</string>
+    <string name="btn_cancel">cancel</string>
+    <string name="field_username">Username</string>
+    <string name="field_email">Email</string>
+    <string name="field_full_name">Full Name</string>
+    <string name="field_password">Password</string>
+    <string name="field_password_confirm">Confirm Password</string>
+    <!-- activity_applicationmenu -->
+    <string name="lbl_session_as">You\'ve initiated a session as: </string>
+    <string name="btn_logout">Logout</string>
+    <string name="title_activity__register">Activity_Register</string>
+</resources>
