@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.util.ArrayList;
+
 import thebestprogramlogiclibrary.User;
 import thebestprogramlogiclibrary.logic.ApplicationLogicImplementation;
 
@@ -19,6 +21,7 @@ public class ActivityRegister extends Activity implements View.OnClickListener {
     private EditText fieldConfirmPassword;
     private EditText fieldEmail;
     private EditText fieldFullName;
+    private ArrayList<EditText> textFields;
     private User user;
     private ApplicationLogicImplementation appLogic;
 
@@ -36,9 +39,9 @@ public class ActivityRegister extends Activity implements View.OnClickListener {
         btnSubmit.setOnClickListener(this);
         btnCancel.setOnClickListener(this);
 
-        btnSubmit.setEnabled(false);
+        textFields = new ArrayList<EditText>();
 
-        // how to add Listeners to the fields?
+        addFieldsToArray();
     }
 
     private void findViews() {
@@ -51,31 +54,66 @@ public class ActivityRegister extends Activity implements View.OnClickListener {
         fieldFullName = findViewById(R.id.fieldFullName);
     }
 
+    private void addFieldsToArray() {
+        textFields.add(fieldUsername);
+        textFields.add(fieldFullName);
+        textFields.add(fieldConfirmPassword);
+        textFields.add(fieldEmail);
+        textFields.add(fieldPassword);
+    }
+
     /**
      * This method dictates what happens when the buttons are pressed
      *
-     * @param v
+     * @param v The View element from which the event was called
      */
     public void onClick(View v) {
         try {
             if (v.getId() == btnSubmit.getId()) {
-                user = new User();
-                user.setEmail(String.valueOf(fieldEmail.getText()));
-                user.setFullName(String.valueOf(fieldFullName.getText()));
-                user.setLogin(String.valueOf(fieldUsername.getText()));
-                user.setPassword(String.valueOf(fieldPassword.getText()));
-                if (appLogic.registerUser(user)) {
-                    Intent mainActivity = new Intent(activity_aplicationmainmenu.xml);
-                    //open the intent somehow
+                boolean filledFields = true;
+                for (EditText field : textFields) {
+                    if (field.getText().length() == 0) {
+                        filledFields = false;
+                        break;
+                    }
                 }
-            } else {
-                //How to go back to the previous activity (login)
+                if (fieldPassword.getText().equals(fieldConfirmPassword.getText()) && filledFields) {
+                    createUser();
+                    if (appLogic.registerUser(user)) {
+                        Intent mainActivityIntent = new Intent(this, ActivityApplicationMainMenu.class);
+                        mainActivityIntent.putExtra("user", user);
+                        startActivity(mainActivityIntent);
+                    }
+                } else if (!fieldPassword.getText().equals(fieldConfirmPassword.getText())){
+                    AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                    alert.setMessage("Passwords don't match");
+                    alert.show();
+                } else if (!filledFields) {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                    alert.setMessage("There are empty fields");
+                    alert.show();
+                }
+            } else if (v.getId() == btnCancel.getId()) {
+                Intent loginActivityIntent = new Intent(this, ActivityLogin.class);
+                startActivity(loginActivityIntent);
             }
         } catch (Exception e) {
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
             alert.setMessage(e.getMessage());
             alert.show();
         }
+    }
 
+    /**
+     * Creates and sets the data of the user to be sent to the server
+     */
+    private void createUser() {
+        user = new User();
+        user.setEmail(String.valueOf(fieldEmail.getText()));
+        user.setFullName(String.valueOf(fieldFullName.getText()));
+        user.setLogin(String.valueOf(fieldUsername.getText()));
+        user.setPassword(String.valueOf(fieldPassword.getText()));
+        user.setUserPrivilege(false);
+        user.setUserStatus(true);
     }
 }
