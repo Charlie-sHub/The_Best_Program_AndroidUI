@@ -8,6 +8,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import java.util.ArrayList;
+import thebestprogramlogiclibrary.User;
+import thebestprogramlogiclibrary.logic.ApplicationLogicImplementation;
+
 
 public class    ActivityLogin extends AppCompatActivity implements View.OnClickListener {
     private TextView txtTitle;
@@ -82,8 +85,24 @@ public class    ActivityLogin extends AppCompatActivity implements View.OnClickL
                     }
                 }
                 if(filledFields){
+                    userLogin();
+                    ClientThread client = new ClientThread();
+                    client.setAction("LOGIN");//Cambia a setAction() el mensaje
+                    client.setUser(user);
+                    client.setAppLogic(appLogic);
+                    client.start();
+                    try {
+                        client.join();
+                    }catch (Exception e){
+                        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                        alert.setMessage(e.getMessage());
+                        alert.show();
+                    }
 
-
+                }else{
+                    AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                    alert.setMessage("There are empty fields");
+                    alert.show();
                 }
             }
 
@@ -95,7 +114,7 @@ public class    ActivityLogin extends AppCompatActivity implements View.OnClickL
     }
     private void userLogin(){
         user = new User();
-        user.setName = fieldUsername;
-        user.setPassword = fieldPassword;
+        user.setLogin(String.valueOf(fieldUsername.getText()));
+        user.setPassword(String.valueOf(fieldPassword.getText()));
     }
 }
