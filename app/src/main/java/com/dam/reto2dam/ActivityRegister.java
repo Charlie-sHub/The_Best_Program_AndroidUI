@@ -79,12 +79,29 @@ public class ActivityRegister extends Activity implements View.OnClickListener {
                 }
                 if (fieldPassword.getText().equals(fieldConfirmPassword.getText()) && filledFields) {
                     createUser();
-                    if (appLogic.registerUser(user)) {
+                    ClientThread client = new ClientThread();
+                    client.setMessage("SIGNIN");
+                    client.setUser(user);
+                    client.setAppLogic(appLogic);
+                    client.start();
+                    try {
+                        client.join();
+                    } catch (Exception e) {
+                        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                        alert.setMessage(e.getMessage());
+                        alert.show();
+                    }
+                    if (client.getMessage().getContent() instanceof Boolean) {
                         Intent mainActivityIntent = new Intent(this, ActivityApplicationMainMenu.class);
                         mainActivityIntent.putExtra("user", user);
                         startActivity(mainActivityIntent);
+                    } else {
+                        Exception e = (Exception) client.getMessage().getContent();
+                        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                        alert.setMessage(e.getMessage());
+                        alert.show();
                     }
-                } else if (!fieldPassword.getText().equals(fieldConfirmPassword.getText())){
+                } else if (!fieldPassword.getText().equals(fieldConfirmPassword.getText())) {
                     AlertDialog.Builder alert = new AlertDialog.Builder(this);
                     alert.setMessage("Passwords don't match");
                     alert.show();
