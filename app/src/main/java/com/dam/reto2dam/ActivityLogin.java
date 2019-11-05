@@ -21,7 +21,9 @@ public class    ActivityLogin extends AppCompatActivity implements View.OnClickL
     private ArrayList<EditText> textFields;
     private User user;
     private ApplicationLogicImplementation appLogic;
-
+    public void setAppLogic(ApplicationLogicImplementation appLogic) {
+        this.appLogic = appLogic;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
