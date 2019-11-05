@@ -20,6 +20,8 @@ public class ActivityApplicationMainMenu extends Activity implements View.OnClic
     private TextView txtUserName;
     private Button btnLogout;
 
+    private Bundle extrasBundle = getIntent().getExtras();
+
     private User user;
 
     @Override
@@ -32,10 +34,13 @@ public class ActivityApplicationMainMenu extends Activity implements View.OnClic
 
         btnLogout.setOnClickListener(this);
 
+        user = (User) extrasBundle.get("user");
+
         txtUserName.setText(user.getFullName());
     }
 
     private void findViews() {
+
         btnLogout = findViewById(R.id.btnLogout);
         txtUserName = findViewById(R.id.txtUserName);
     }
@@ -63,6 +68,12 @@ public class ActivityApplicationMainMenu extends Activity implements View.OnClic
      * The user stored on the memory is equal to null.
      */
     private void deleteUser() {
+
         this.user = null;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
     }
 }
