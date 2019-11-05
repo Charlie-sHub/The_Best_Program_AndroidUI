@@ -80,7 +80,7 @@ public class ActivityRegister extends Activity implements View.OnClickListener {
                 if (fieldPassword.getText().equals(fieldConfirmPassword.getText()) && filledFields) {
                     createUser();
                     ClientThread client = new ClientThread();
-                    client.setMessage("SIGNIN");
+                    client.setAction("SIGNIN");
                     client.setUser(user);
                     client.setAppLogic(appLogic);
                     client.start();
