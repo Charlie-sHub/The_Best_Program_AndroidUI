@@ -46,6 +46,7 @@ public class ClientThread extends Thread {
             }
         } catch (Exception e) {
             LOG.severe(e.getMessage());
+            message.setContent(e);
         }
 
     }
