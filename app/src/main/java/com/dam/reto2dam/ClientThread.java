@@ -19,13 +19,15 @@ public class ClientThread extends Thread {
     }
 
     public void setMessage(String action) {
-        this.action = action;
+        this.message = message;
     }
 
     public void setUser(User user) {
         this.user = user;
     }
-
+    public void setAction(String action) {
+        this.action = action;
+    }
     public Message getMessage() {
         return message;
     }
@@ -33,7 +35,7 @@ public class ClientThread extends Thread {
     @Override
     public synchronized void run() {
         try {
-            message = new Message(); // create an empty Message constructor
+            message = new Message();
             switch (action) {
                 case "SIGNIN":
                     message.setContent(appLogic.registerUser(user));
@@ -44,6 +46,7 @@ public class ClientThread extends Thread {
             }
         } catch (Exception e) {
             LOG.severe(e.getMessage());
+            message.setContent(e);
         }
 
     }

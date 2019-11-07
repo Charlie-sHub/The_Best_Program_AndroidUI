@@ -24,10 +24,7 @@ public class ActivityRegister extends Activity implements View.OnClickListener {
     private ArrayList<EditText> textFields;
     private User user;
     private ApplicationLogicImplementation appLogic;
-
-    public void setAppLogic(ApplicationLogicImplementation appLogic) {
-        this.appLogic = appLogic;
-    }
+    private Bundle extrasBundle = getIntent().getExtras();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +35,7 @@ public class ActivityRegister extends Activity implements View.OnClickListener {
 
         btnSubmit.setOnClickListener(this);
         btnCancel.setOnClickListener(this);
-
+        appLogic = (ApplicationLogicImplementation) extrasBundle.get("appLogic");
         textFields = new ArrayList<EditText>();
 
         addFieldsToArray();
@@ -80,7 +77,7 @@ public class ActivityRegister extends Activity implements View.OnClickListener {
                 if (fieldPassword.getText().equals(fieldConfirmPassword.getText()) && filledFields) {
                     createUser();
                     ClientThread client = new ClientThread();
-                    client.setMessage("SIGNIN");
+                    client.setAction("SIGNIN");
                     client.setUser(user);
                     client.setAppLogic(appLogic);
                     client.start();
