@@ -35,8 +35,8 @@ public class ActivityRegister extends Activity implements View.OnClickListener {
 
         btnSubmit.setOnClickListener(this);
         btnCancel.setOnClickListener(this);
-        appLogic = (ApplicationLogicImplementation) extrasBundle.get("appLogic");
-        textFields = new ArrayList<EditText>();
+        appLogic = (ApplicationLogicImplementation) extrasBundle.get("APPLOGIC");
+        textFields = new ArrayList<>();
 
         addFieldsToArray();
     }
@@ -90,7 +90,7 @@ public class ActivityRegister extends Activity implements View.OnClickListener {
                     }
                     if (client.getMessage().getContent() instanceof Boolean) {
                         Intent mainActivityIntent = new Intent(this, ActivityApplicationMainMenu.class);
-                        mainActivityIntent.putExtra("user", user);
+                        mainActivityIntent.putExtra("USER", user);
                         startActivity(mainActivityIntent);
                     } else {
                         Exception e = (Exception) client.getMessage().getContent();
