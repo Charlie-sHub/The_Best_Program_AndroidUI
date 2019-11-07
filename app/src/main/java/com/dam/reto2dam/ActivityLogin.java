@@ -7,8 +7,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
+
 import thebestprogramlogiclibrary.User;
+import thebestprogramlogiclibrary.logic.ApplicationLogicFactory;
 import thebestprogramlogiclibrary.logic.ApplicationLogicImplementation;
 
 
@@ -21,19 +27,26 @@ public class    ActivityLogin extends AppCompatActivity implements View.OnClickL
     private ArrayList<EditText> textFields;
     private User user;
     private ApplicationLogicImplementation appLogic;
-    public void setAppLogic(ApplicationLogicImplementation appLogic) {
-        this.appLogic = appLogic;
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         findViews();
-
+        try {
+            appLogic = ApplicationLogicFactory.getAppLogicImpl();
+        }catch (IOException e){
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.setMessage(e.getMessage());
+            alert.show();
+        }
+        String host = ResourceBundle.getBundle("thebestprogramdesktop.connection").getString("host");
+        int port = Integer.parseInt(ResourceBundle.getBundle("thebestprogramdesktop.connection").getString("port"));
+        appLogic.setHost(host);
+        appLogic.setPort(port);
         btnLogin.setOnClickListener(this);
         btnRegister.setOnClickListener(this);
 
-        textFields = new ArrayList<EditText>();
+        textFields = new ArrayList<>();
 
         addFieldsToArray();
     }
@@ -89,7 +102,7 @@ public class    ActivityLogin extends AppCompatActivity implements View.OnClickL
         if(filledFields){
             userLogin();
             ClientThread client = new ClientThread();
-            client.setAction("LOGIN");//Cambiar a setAction() el mensaje
+            client.setAction("LOGIN");
             client.setUser(user);
             client.setAppLogic(appLogic);
             client.start();
@@ -103,7 +116,7 @@ public class    ActivityLogin extends AppCompatActivity implements View.OnClickL
             if (client.getMessage().getContent() instanceof User){
                 user = (User) client.getMessage().getContent();
                 Intent androidMainActivityIntent = new Intent(this, ActivityApplicationMainMenu.class);
-                androidMainActivityIntent.putExtra("user", user);
+                androidMainActivityIntent.putExtra("USER", user);
                 startActivity(androidMainActivityIntent);
             }else {
                 Exception e = (Exception) client.getMessage().getContent();
@@ -125,6 +138,7 @@ public class    ActivityLogin extends AppCompatActivity implements View.OnClickL
      */
     public void onBtnRegisterPress() {
         Intent registerIntent = new Intent(this, ActivityRegister.class);
+        registerIntent.putExtra("APPLOGIC", (Serializable) appLogic);
         startActivity(registerIntent);
     }
 }
