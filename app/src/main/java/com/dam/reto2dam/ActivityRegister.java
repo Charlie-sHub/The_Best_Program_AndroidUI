@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 import thebestprogramlogiclibrary.User;
 import thebestprogramlogiclibrary.logic.ApplicationLogicImplementation;
@@ -24,7 +25,7 @@ public class ActivityRegister extends Activity implements View.OnClickListener {
     private ArrayList<EditText> textFields;
     private User user;
     private ApplicationLogicImplementation appLogic;
-    private Bundle extrasBundle = getIntent().getExtras();
+    private Bundle extrasBundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,8 @@ public class ActivityRegister extends Activity implements View.OnClickListener {
 
         btnSubmit.setOnClickListener(this);
         btnCancel.setOnClickListener(this);
+        extrasBundle = new Bundle();
+        extrasBundle = getIntent().getExtras();
         appLogic = (ApplicationLogicImplementation) extrasBundle.get("APPLOGIC");
         textFields = new ArrayList<>();
 
