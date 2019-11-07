@@ -2,6 +2,7 @@ package com.dam.reto2dam;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -39,8 +40,8 @@ public class    ActivityLogin extends AppCompatActivity implements View.OnClickL
             alert.setMessage(e.getMessage());
             alert.show();
         }
-        String host = ResourceBundle.getBundle("thebestprogramdesktop.connection").getString("host");
-        int port = Integer.parseInt(ResourceBundle.getBundle("thebestprogramdesktop.connection").getString("port"));
+        String host = getResources().getString(R.string.host);
+        int port = getResources().getInteger(R.integer.port);
         appLogic.setHost(host);
         appLogic.setPort(port);
         btnLogin.setOnClickListener(this);
@@ -138,7 +139,7 @@ public class    ActivityLogin extends AppCompatActivity implements View.OnClickL
      */
     public void onBtnRegisterPress() {
         Intent registerIntent = new Intent(this, ActivityRegister.class);
-        registerIntent.putExtra("APPLOGIC", (Serializable) appLogic);
+        registerIntent.putExtra("APPLOGIC", appLogic);
         startActivity(registerIntent);
     }
 }

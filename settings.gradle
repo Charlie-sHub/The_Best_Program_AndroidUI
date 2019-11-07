@@ -1,1 +1,1 @@
-include ':app', ':The_Best_Program_Desktop'
+include ':app', ':The_Best_Program_Desktop', ':The_Best_Program_Logic_Library'
