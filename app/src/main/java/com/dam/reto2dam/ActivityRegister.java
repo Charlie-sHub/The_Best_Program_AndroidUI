@@ -48,10 +48,11 @@ public class ActivityRegister extends Activity implements View.OnClickListener {
         btnSubmit = findViewById(R.id.btnSubmit);
         btnCancel = findViewById(R.id.btnCancel);
         fieldUsername = findViewById(R.id.fieldUsername);
-        fieldPassword = findViewById(R.id.fieldPassword);
-        fieldConfirmPassword = findViewById(R.id.fieldConfirmPassword);
         fieldEmail = findViewById(R.id.fieldEmail);
-        fieldFullName = findViewById(R.id.fieldFullName);
+        fieldPassword = findViewById(R.id.fieldPassword);
+        fieldConfirmPassword = findViewById(R.id.fieldConfirmPassword);fieldFullName = findViewById(R.id.fieldFullName);
+        fieldPassword.setText("");
+        fieldConfirmPassword.setText("");
     }
 
     private void addFieldsToArray() {
@@ -77,7 +78,7 @@ public class ActivityRegister extends Activity implements View.OnClickListener {
                         break;
                     }
                 }
-                if (fieldPassword.getText().equals(fieldConfirmPassword.getText()) && filledFields) {
+                if (fieldPassword.getText().toString().trim().equals(fieldConfirmPassword.getText().toString().trim()) && filledFields) {
                     createUser();
                     ClientThread client = new ClientThread();
                     client.setAction("SIGNIN");
@@ -91,7 +92,7 @@ public class ActivityRegister extends Activity implements View.OnClickListener {
                         alert.setMessage(e.getMessage());
                         alert.show();
                     }
-                    if (client.getMessage().getContent() instanceof Boolean) {
+                    if (client.getMessage().getContent() instanceof User) {
                         Intent mainActivityIntent = new Intent(this, ActivityApplicationMainMenu.class);
                         mainActivityIntent.putExtra("USER", user);
                         startActivity(mainActivityIntent);
@@ -101,9 +102,9 @@ public class ActivityRegister extends Activity implements View.OnClickListener {
                         alert.setMessage(e.getMessage());
                         alert.show();
                     }
-                } else if (!fieldPassword.getText().equals(fieldConfirmPassword.getText())) {
+                } else if (!fieldPassword.getText().toString().trim().equals(fieldConfirmPassword.getText().toString().trim())) {
                     AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                    alert.setMessage("Passwords don't match");
+                    alert.setMessage("Passwords don't match: ");
                     alert.show();
                 } else if (!filledFields) {
                     AlertDialog.Builder alert = new AlertDialog.Builder(this);

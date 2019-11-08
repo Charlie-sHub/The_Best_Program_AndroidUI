@@ -20,7 +20,7 @@ public class ActivityApplicationMainMenu extends Activity implements View.OnClic
     private TextView txtUserName;
     private Button btnLogout;
 
-    private Bundle extrasBundle = getIntent().getExtras();
+    private Bundle extrasBundle;
 
     private User user;
 
@@ -33,8 +33,9 @@ public class ActivityApplicationMainMenu extends Activity implements View.OnClic
         findViews();
 
         btnLogout.setOnClickListener(this);
-
-        user = (User) extrasBundle.get("user");
+        extrasBundle = new Bundle();
+        extrasBundle = getIntent().getExtras();
+        user = (User) extrasBundle.get("USER");
 
         txtUserName.setText(user.getFullName());
     }

@@ -80,6 +80,7 @@ public class ActivityLogin extends AppCompatActivity implements View.OnClickList
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
             alert.setMessage(e.getMessage());
             alert.show();
+            e.printStackTrace(); // just to test something
         }
     }
 

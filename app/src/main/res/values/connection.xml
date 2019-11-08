@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="host">MACINF08</string>
+    <string name="host">MACINF08.TartangaLH.eus</string>
     <integer name="port">6969</integer>
 </resources>
