@@ -19,7 +19,7 @@ import thebestprogramlogiclibrary.logic.ApplicationLogicFactory;
 import thebestprogramlogiclibrary.logic.ApplicationLogicImplementation;
 
 
-public class    ActivityLogin extends AppCompatActivity implements View.OnClickListener {
+public class ActivityLogin extends AppCompatActivity implements View.OnClickListener {
 
     private EditText fieldUsername;
     private EditText fieldPassword;
@@ -28,6 +28,7 @@ public class    ActivityLogin extends AppCompatActivity implements View.OnClickL
     private ArrayList<EditText> textFields;
     private User user;
     private ApplicationLogicImplementation appLogic;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +36,7 @@ public class    ActivityLogin extends AppCompatActivity implements View.OnClickL
         findViews();
         try {
             appLogic = ApplicationLogicFactory.getAppLogicImpl();
-        }catch (IOException e){
+        } catch (IOException e) {
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
             alert.setMessage(e.getMessage());
             alert.show();
@@ -53,13 +54,13 @@ public class    ActivityLogin extends AppCompatActivity implements View.OnClickL
     }
 
 
-
     private void findViews() {
         fieldUsername = findViewById(R.id.fieldUsername);
         fieldPassword = findViewById(R.id.fieldPassword);
         btnLogin = findViewById(R.id.btnLogin);
         btnRegister = findViewById(R.id.btnRegister);
     }
+
     private void addFieldsToArray() {
         textFields.add(fieldUsername);
         textFields.add(fieldPassword);
@@ -69,19 +70,20 @@ public class    ActivityLogin extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         try {
-            if (v.getId() == btnLogin.getId()){
+            if (v.getId() == btnLogin.getId()) {
                 onBtnLoginPress();
-            }else if (v.getId() == btnRegister.getId()){
+            } else if (v.getId() == btnRegister.getId()) {
                 onBtnRegisterPress();
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
             alert.setMessage(e.getMessage());
             alert.show();
         }
     }
-    private void userLogin(){
+
+    private void userLogin() {
         user = new User();
         user.setLogin(String.valueOf(fieldUsername.getText()));
         user.setPassword(String.valueOf(fieldPassword.getText()));
@@ -92,7 +94,7 @@ public class    ActivityLogin extends AppCompatActivity implements View.OnClickL
      * Will be initialised when the client click the login method
      * Firstly will verify if all the fields are filled, then would try to connect and verify the data
      */
-    public void onBtnLoginPress(){
+    public void onBtnLoginPress() {
         boolean filledFields = true;
         for (EditText field : textFields) {
             if (field.getText().length() == 0) {
@@ -100,7 +102,7 @@ public class    ActivityLogin extends AppCompatActivity implements View.OnClickL
                 break;
             }
         }
-        if(filledFields){
+        if (filledFields) {
             userLogin();
             ClientThread client = new ClientThread();
             client.setAction("LOGIN");
@@ -109,24 +111,24 @@ public class    ActivityLogin extends AppCompatActivity implements View.OnClickL
             client.start();
             try {
                 client.join();
-            }catch (Exception e){
+            } catch (Exception e) {
                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
                 alert.setMessage(e.getMessage());
                 alert.show();
             }
-            if (client.getMessage().getContent() instanceof User){
+            if (client.getMessage().getContent() instanceof User) {
                 user = (User) client.getMessage().getContent();
                 Intent androidMainActivityIntent = new Intent(this, ActivityApplicationMainMenu.class);
                 androidMainActivityIntent.putExtra("USER", user);
                 startActivity(androidMainActivityIntent);
-            }else {
+            } else {
                 Exception e = (Exception) client.getMessage().getContent();
                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
                 alert.setMessage(e.getMessage());
                 alert.show();
             }
 
-        }else{
+        } else {
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
             alert.setMessage("There are empty fields");
             alert.show();

@@ -25,9 +25,11 @@ public class ClientThread extends Thread {
     public void setUser(User user) {
         this.user = user;
     }
+
     public void setAction(String action) {
         this.action = action;
     }
+
     public Message getMessage() {
         return message;
     }
